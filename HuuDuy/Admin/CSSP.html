@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chỉnh Sửa Sản Phẩm</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+<style>
+  body {
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    padding: 40px;
+  }
+
+  .form-container {
+    max-width: 600px;
+    margin: auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  h2 {
+    text-align: center;
+    font-weight: normal;
+    margin-bottom: 30px;
+  }
+
+  .form-group {
+    margin-bottom: 20px; /* Increased margin for better spacing */
+  }
+
+  label {
+    font-weight: normal; /* Labels are not bold in the image */
+    margin-bottom: 8px; /* Spacing between label and input */
+    display: block; /* Ensure label takes its own line */
+    color: #333; /* Darker text for labels */
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.75rem 1rem; /* Adjust padding for input fields */
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    font-size: 1rem;
+  }
+
+  /* Custom dropdown styles - Copied and slightly adjusted from previous task */
+  .custom-dropdown {
+    position: relative;
+    width: 100%;
+  }
+
+  .dropdown-header {
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem; /* Match input padding */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background-color: #fff;
+    font-size: 1rem;
+  }
+
+  .dropdown-list {
+    position: absolute;
+    width: 100%;
+    border: 1px solid #ced4da;
+    border-top: none;
+    border-radius: 0 0 0.375rem 0.375rem;
+    background-color: #fff;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none; /* Hidden by default */
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1); /* Subtle shadow for dropdown list */
+  }
+
+  .dropdown-list.show {
+    display: block;
+  }
+
+  .dropdown-item {
+    padding: 0.75rem 1rem; /* Match input padding */
+    cursor: pointer;
+    color: #333;
+  }
+
+  .dropdown-item:hover, .dropdown-item.selected {
+    background-color: #e9ecef;
+  }
+
+  /* Error message style */
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 3px;
+  }
+
+  /* Image upload section */
+  .image-upload-section {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  .image-upload-wrapper {
+    display: flex;
+    align-items: flex-start; /* Align button and image preview at the top */
+    gap: 20px; /* Space between choose button and image preview */
+  }
+
+  .choose-file-btn-wrapper {
+    flex-shrink: 0; /* Prevent button from shrinking */
+  }
+
+  .choose-btn {
+    padding: 8px 16px;
+    background-color: #f8f9fa; /* Lighter background for choose file button */
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .image-preview-container {
+    width: 150px; /* Fixed width for the image container */
+    height: 150px; /* Fixed height for the image container */
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensure image doesn't overflow */
+    background-color: #e9ecef; /* Placeholder background */
+  }
+
+  .image-preview {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Ensure the image fits within the container without cropping */
+  }
+
+  /* Update button */
+  .btn-update {
+    width: 100px;
+    height: 45px; /* Slightly taller button */
+    font-size: 1rem; /* Standard font size */
+    background-color: #0d6efd; /* Bootstrap primary blue */
+    border-color: #0d6efd;
+    color: #fff;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    display: block; /* Make it a block element to use margin auto for centering */
+    margin-left: auto; /* Push to the right for float-end effect */
+    margin-right: 0;
+    margin-top: 20px; /* Space above the button */
+  }
+
+  .btn-update i {
+    margin-right: 5px; /* Space between icon and text */
+  }
+
+  /* Custom Confirmation Modal Styles (Pre-action) */
+  .custom-modal {
+    display: none; /* Ẩn modal theo mặc định */
+    position: fixed; /* Stay in place */
+    z-index: 2000; /* Sit on top (higher than other elements) */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .custom-modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    text-align: center;
+  }
+
+  .modal-message {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+  }
+
+  .modal-buttons .btn {
+    padding: 10px 25px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .modal-buttons .btn i {
+    margin-right: 8px;
+  }
+
+  .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+      color: white; /* Ensure text is white */
+  }
+  .btn-success:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
+  }
+
+  .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+      color: white; /* Ensure text is white */
+  }
+  .btn-danger:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+  }
+
+  /* START: Styles for Edit Success Modal (Post-action) */
+  .edit-success-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 3000; /* Higher z-index than confirmation modal */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5); /* Semi-transparent black background */
+    justify-content: center;
+    align-items: center;
+  }
+
+  .edit-success-modal-content {
+    background-color: #fefefe;
+    padding: 30px;
+    border: 1px solid #ddd;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    text-align: center;
+    position: relative;
+  }
+
+  /* Removed .edit-success-modal-close styles as the element is removed */
+
+  .edit-success-modal-icon {
+    font-size: 48px;
+    color: #28a745; /* Green checkmark */
+    margin-bottom: 20px;
+  }
+
+  .edit-success-modal-message {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .edit-success-modal-buttons {
+    display: flex;
+    justify-content: center; /* Center the single button */
+    /* Removed gap as there's only one button */
+  }
+
+  .edit-success-modal-buttons button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .edit-success-modal-buttons .btn-primary-action {
+    background-color: #28a745; /* Green for success action */
+    color: white;
+    border: 1px solid #28a745;
+  }
+  .edit-success-modal-buttons .btn-primary-action:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+  }
+
+  /* Removed .btn-secondary-action styles as the element is removed */
+  /* END: Styles for Edit Success Modal (Post-action) */
+</style>
+</head>
+<body>
+
+<div class="form-container">
+  <h2>CHỈNH SỬA SẢN PHẨM</h2>
+
+  <div class="form-group">
+    <label for="tenSanPham">Tên sản phẩm</label>
+    <input type="text" id="tenSanPham" class="form-control" value="GIÀY GAZELLE" />
+    <div class="error-message" id="error-ten"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="moTa">Mô tả</label>
+    <input type="text" id="moTa" class="form-control" value="Giày thể thao nam năng động, chất liệu thoáng khí, đế êm ái, phù hợp đi học và luyện tập." />
+    <div class="error-message" id="error-mota"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="gia">Giá cả</label>
+    <input type="text" id="gia" class="form-control" value="2.700.000 ₫" />
+    <div class="error-message" id="error-gia"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="soLuong">Số lượng tồn</label>
+    <input type="text" id="soLuong" class="form-control" value="324" />
+    <div class="error-message" id="error-sl"></div>
+  </div>
+
+  <div class="form-group custom-dropdown" id="color-dropdown">
+    <label for="mauSac">Màu sắc</label>
+    <div class="dropdown-header">
+      <span id="selected-color-text">Màu Trắng</span>
+      <i class="bi bi-chevron-down"></i>
+    </div>
+    <div class="dropdown-list">
+      <div class="dropdown-item" data-value="trang">Màu Trắng</div>
+      <div class="dropdown-item" data-value="do">Màu Đỏ</div>
+      <div class="dropdown-item" data-value="xanh">Màu Xanh</div>
+      <div class="dropdown-item" data-value="den">Màu Đen</div>
+      <div class="dropdown-item" data-value="vang">Màu Vàng</div>
+    </div>
+    <input type="hidden" id="mauSac" value="trang" /> <div class="error-message" id="error-mau"></div>
+  </div>
+
+  <div class="form-group custom-dropdown" id="size-dropdown">
+    <label for="kichThuoc">Kích thước</label>
+    <div class="dropdown-header">
+      <span id="selected-size-text">24.5 cm</span>
+      <i class="bi bi-chevron-down"></i>
+    </div>
+    <div class="dropdown-list">
+      <div class="dropdown-item" data-value="24.5cm">24.5 cm</div>
+      <div class="dropdown-item" data-value="25cm">25 cm</div>
+      <div class="dropdown-item" data-value="25.5cm">25.5 cm</div>
+      <div class="dropdown-item" data-value="26cm">26 cm</div>
+      <div class="dropdown-item" data-value="26.5cm">26.5 cm</div>
+    </div>
+    <input type="hidden" id="kichThuoc" value="24.5cm" /> <div class="error-message" id="error-kichthuoc"></div>
+  </div>
+
+  <div class="form-group custom-dropdown" id="category-dropdown">
+    <label for="danhMuc">Danh mục sản phẩm</label>
+    <div class="dropdown-header">
+      <span id="selected-category-text">Sneaker</span>
+      <i class="bi bi-chevron-down"></i>
+    </div>
+    <div class="dropdown-list">
+      <div class="dropdown-item" data-value="giaytay">Giày Tây</div>
+      <div class="dropdown-item" data-value="giaydep">Giày Dép</div >
+      <div class="dropdown-item" data-value="sanda">Sanda</div>
+      <div class="dropdown-item" data-value="sneaker">Sneaker</div>
+      <div class="dropdown-item" data-value="boot">Boot</div>
+    </div>
+    <input type="hidden" id="danhMuc" value="sneaker" /> <div class="error-message" id="error-danhmuc"></div>
+  </div>
+
+  <div class="form-group image-upload-section">
+    <label>Ảnh sản phẩm</label>
+    <div class="image-upload-wrapper">
+      <div class="choose-file-btn-wrapper">
+        <button class="choose-btn" id="choose-file">Chọn file</button>
+      </div>
+      <div class="image-preview-container">
+        <img id="image-preview" class="image-preview" src="img/2.png" alt="Product Image" />
+      </div>
+    </div>
+    <div class="error-message" id="error-file"></div>
+  </div>
+
+  <button class="btn btn-primary btn-update" id="btnUpdate">
+    <i class="bi bi-arrow-clockwise"></i> Sửa
+  </button>
+</div>
+
+<div id="confirmationModal" class="custom-modal">
+  <div class="custom-modal-content">
+    <p class="modal-message">Bạn có muốn cập nhật nữa không ?</p>
+    <div class="modal-buttons">
+      <button id="confirmOkBtn" class="btn btn-success"><i class="bi bi-check-lg"></i> OK</button>
+      <button id="confirmCancelBtn" class="btn btn-danger"><i class="bi bi-x-lg"></i> Hủy</button>
+    </div>
+  </div>
+</div>
+<div id="editSuccessModal" class="edit-success-modal">
+  <div class="edit-success-modal-content">
+    <div class="edit-success-modal-icon"><i class="bi bi-check-circle-fill"></i></div>
+    <div class="edit-success-modal-message">Chỉnh sửa sản phẩm thành công</div>
+    <div class="edit-success-modal-buttons">
+      <button class="btn-primary-action" id="okEditSuccessBtn"><i class="bi bi-check-lg"></i> Về danh sách sản phẩm</button>
+      </div>
+  </div>
+</div>
+<script>
+  // Biến toàn cục để theo dõi nếu người dùng đã chọn một file ảnh mới
+  let newImageSelected = false;
+  // Biến toàn cục để theo dõi nếu form đang ở chế độ chỉnh sửa (có productId) hay thêm mới
+  let isEditMode = false;
+  // Biến để lưu trữ đường dẫn ảnh ban đầu khi ở chế độ chỉnh sửa
+  let initialImageSrc = '';
+
+
+  // Function to initialize custom dropdowns (reused from previous task)
+  function setupCustomDropdown(dropdownId, hiddenInputId, selectedTextId) {
+    const dropdown = document.getElementById(dropdownId);
+    const header = dropdown.querySelector('.dropdown-header');
+    const list = dropdown.querySelector('.dropdown-list');
+    const hiddenInput = document.getElementById(hiddenInputId);
+    const selectedText = document.getElementById(selectedTextId);
+    const items = dropdown.querySelectorAll('.dropdown-item');
+
+    // Set initial selected state based on hidden input value
+    const initialValue = hiddenInput.value;
+    items.forEach(item => {
+      if (item.dataset.value === initialValue) {
+        item.classList.add('selected');
+        selectedText.textContent = item.textContent; // Ensure initial text is correct
+      }
+    });
+
+    header.addEventListener('click', () => {
+      list.classList.toggle('show');
+    });
+
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        // Remove 'selected' class from all items
+        items.forEach(i => i.classList.remove('selected'));
+        // Add 'selected' class to the clicked item
+        item.classList.add('selected');
+
+        hiddenInput.value = item.dataset.value;
+        selectedText.textContent = item.textContent;
+        list.classList.remove('show'); // Hide the list after selection
+        // Clear error message when an item is selected
+        const errorDiv = dropdown.querySelector('.error-message');
+        if (errorDiv) {
+            errorDiv.innerText = '';
+        }
+      });
+    });
+
+    // Close dropdown if clicked outside
+    document.addEventListener('click', (event) => {
+      if (!dropdown.contains(event.target)) {
+        list.classList.remove('show');
+      }
+    });
+  }
+
+  // Setup each custom dropdown
+  setupCustomDropdown('color-dropdown', 'mauSac', 'selected-color-text');
+  setupCustomDropdown('size-dropdown', 'kichThuoc', 'selected-size-text');
+  setupCustomDropdown('category-dropdown', 'danhMuc', 'selected-category-text');
+
+  // Image upload logic
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*'; // Accept only image files
+
+  document.getElementById('choose-file').addEventListener('click', () => {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener('change', () => {
+    const imagePreview = document.getElementById('image-preview');
+    if (fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        imagePreview.src = e.target.result;
+        newImageSelected = true; // Đánh dấu đã chọn ảnh mới
+      };
+
+      reader.readAsDataURL(file);
+      // Clear file error message if a file is chosen
+      document.getElementById('error-file').innerText = '';
+    } else {
+      newImageSelected = false; // Nếu người dùng mở hộp thoại nhưng không chọn file, reset cờ
+      // Giữ nguyên ảnh preview hiện tại (có thể là ảnh cũ hoặc ảnh placeholder)
+      // Validation sẽ xử lý việc ảnh có hợp lệ hay không khi submit
+    }
+  });
+
+  // Get confirmation modal elements
+  const confirmationModal = document.getElementById('confirmationModal');
+  const confirmOkBtn = document.getElementById('confirmOkBtn');
+  const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+
+  // Get edit success modal elements (NEW)
+  const editSuccessModal = document.getElementById('editSuccessModal');
+  // editSuccessModalCloseBtn và closeEditSuccessBtn đã bị loại bỏ
+
+  // Variable to store form data if validation passes
+  let productDataToUpdate = null;
+
+  // Function to load product data based on ID from URL
+  function loadProductData(productId) {
+    // For this static HTML, we'll use mock data
+    const mockProductData = {
+        '5': {
+            tenSanPham: 'GIÀY GAZELLE',
+            moTa: 'Giày thể thao nam năng động, chất liệu thoáng khí, đế êm ái, phù hợp đi học và luyện tập.',
+            gia: '2.700.000 ₫',
+            soLuong: '324',
+            mauSac: 'trang',
+            selectedMauSacText: 'Màu Trắng',
+            kichThuoc: '24.5cm',
+            selectedKichThuocText: '24.5 cm',
+            danhMuc: 'sneaker',
+            selectedDanhMucText: 'Sneaker',
+            imageUrl: '../img/2.png' // Đây là ảnh có sẵn
+        },
+        '2': {
+            tenSanPham: 'GIÀY SAMBA OG',
+            moTa: 'Giày sneaker cổ điển, da cao cấp, thoải mái cho mọi hoạt động.',
+            gia: '2.700.000 ₫',
+            soLuong: '99',
+            mauSac: 'den',
+            selectedMauSacText: 'Màu Đen',
+            kichThuoc: '25cm',
+            selectedKichThuocText: '25 cm',
+            danhMuc: 'sneaker',
+            selectedDanhMucText: 'Sneaker',
+            imageUrl: '../img/2.png' // Ảnh khác
+        },
+        '1': {
+            tenSanPham: 'GIÀY ULTRABOUNCE',
+            moTa: 'Giày chạy bộ nhẹ nhàng, đệm Bounce êm ái, lý tưởng cho tập luyện hàng ngày.',
+            gia: '2.400.000 ₫',
+            soLuong: '243',
+            mauSac: 'xanh',
+            selectedMauSacText: 'Màu Xanh',
+            kichThuoc: '26cm',
+            selectedKichThuocText: '26 cm',
+            danhMuc: 'sneaker',
+            selectedDanhMucText: 'Sneaker',
+            imageUrl: '../img/2.png' // Giả sử có thêm ảnh
+        }
+    };
+
+    const product = mockProductData[productId];
+    if (product) {
+        isEditMode = true; // Đặt chế độ chỉnh sửa
+        document.getElementById('tenSanPham').value = product.tenSanPham;
+        document.getElementById('moTa').value = product.moTa;
+        document.getElementById('gia').value = product.gia;
+        document.getElementById('soLuong').value = product.soLuong;
+
+        // Update color dropdown
+        document.getElementById('mauSac').value = product.mauSac;
+        document.getElementById('selected-color-text').textContent = product.selectedMauSacText;
+        document.querySelectorAll('#color-dropdown .dropdown-item').forEach(item => {
+            item.classList.remove('selected');
+            if (item.dataset.value === product.mauSac) {
+                item.classList.add('selected');
+            }
+        });
+
+        // Update size dropdown
+        document.getElementById('kichThuoc').value = product.kichThuoc;
+        document.getElementById('selected-size-text').textContent = product.selectedKichThuocText;
+        document.querySelectorAll('#size-dropdown .dropdown-item').forEach(item => {
+            item.classList.remove('selected');
+            if (item.dataset.value === product.kichThuoc) {
+                item.classList.add('selected');
+            }
+        });
+
+        // Update category dropdown
+        document.getElementById('danhMuc').value = product.danhMuc;
+        document.getElementById('selected-category-text').textContent = product.selectedDanhMucText;
+        document.querySelectorAll('#category-dropdown .dropdown-item').forEach(item => {
+            item.classList.remove('selected');
+            if (item.dataset.value === product.danhMuc) {
+                item.classList.add('selected');
+            }
+        });
+
+        document.getElementById('image-preview').src = product.imageUrl;
+        initialImageSrc = product.imageUrl; // Lưu ảnh gốc khi tải form
+        console.log("Loading data for product ID:", productId);
+    } else {
+        isEditMode = false; // Đặt chế độ thêm mới
+        console.log('No mock data found for ID:', productId, '. Switching to Add New Product mode.');
+        document.querySelector('h2').textContent = 'THÊM SẢN PHẨM MỚI';
+        document.getElementById('btnUpdate').innerHTML = '<i class="bi bi-plus-circle"></i> Thêm';
+        // Clear default values for add new product form
+        document.getElementById('tenSanPham').value = '';
+        document.getElementById('moTa').value = '';
+        document.getElementById('gia').value = '';
+        document.getElementById('soLuong').value = '';
+        // Reset dropdowns to default/empty state
+        document.getElementById('mauSac').value = '';
+        document.getElementById('selected-color-text').textContent = 'Chọn màu sắc'; // Changed for add mode
+        document.querySelectorAll('#color-dropdown .dropdown-item').forEach(item => item.classList.remove('selected'));
+
+        document.getElementById('kichThuoc').value = '';
+        document.getElementById('selected-size-text').textContent = 'Chọn kích thước'; // Changed for add mode
+        document.querySelectorAll('#size-dropdown .dropdown-item').forEach(item => item.classList.remove('selected'));
+
+        document.getElementById('danhMuc').value = '';
+        document.getElementById('selected-category-text').textContent = 'Chọn danh mục'; // Changed for add mode
+        document.querySelectorAll('#category-dropdown .dropdown-item').forEach(item => item.classList.remove('selected'));
+
+        // Set image preview to a transparent placeholder for new product
+        document.getElementById('image-preview').src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+        initialImageSrc = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='; // Placeholder initial src
+    }
+  }
+
+
+  // When the page loads, check URL for product ID
+  document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id'); // Get 'id' from URL query parameter
+
+    loadProductData(productId); // Load product data or switch to add mode
+  });
+
+
+  // Validation logic for the Update button
+  document.getElementById('btnUpdate').addEventListener('click', () => {
+    // Reset all error messages
+    document.querySelectorAll('.error-message').forEach(el => el.innerText = '');
+
+    let errors = 0;
+
+    // Validate Tên sản phẩm
+    const ten = document.getElementById('tenSanPham').value.trim();
+    if (!ten) {
+      document.getElementById('error-ten').innerText = '* Vui lòng nhập tên sản phẩm!';
+      errors++;
+    }
+
+    // Validate Mô tả
+    const moTa = document.getElementById('moTa').value.trim();
+    if (!moTa) {
+      document.getElementById('error-mota').innerText = '* Vui lòng nhập mô tả!';
+      errors++;
+    }
+
+    // Validate Giá cả
+    const gia = document.getElementById('gia').value.trim();
+    // Remove " ₫" and replace "." with "" for parsing
+    const cleanedGia = gia.replace(' ₫', '').replace(/\./g, '');
+    if (!cleanedGia || isNaN(cleanedGia) || Number(cleanedGia) <= 0) {
+      document.getElementById('error-gia').innerText = '* Giá không hợp lệ!';
+      errors++;
+    }
+
+    // Validate Số lượng tồn
+    const soLuong = document.getElementById('soLuong').value.trim();
+    if (!soLuong || isNaN(soLuong) || !Number.isInteger(Number(soLuong)) || Number(soLuong) <= 0) {
+      document.getElementById('error-sl').innerText = '* Số lượng tồn kho không hợp lệ!';
+      errors++;
+    }
+
+    // Validate Màu sắc (from hidden input of custom dropdown)
+    const mauSac = document.getElementById('mauSac').value;
+    if (!mauSac) {
+      document.getElementById('error-mau').innerText = '* Vui lòng chọn màu sắc!';
+      errors++;
+    }
+
+    // Validate Kích thước (from hidden input of custom dropdown)
+    const kichThuoc = document.getElementById('kichThuoc').value;
+    if (!kichThuoc) {
+      document.getElementById('error-kichthuoc').innerText = '* Vui lòng chọn kích thước!';
+      errors++;
+    }
+
+    // Validate Danh mục sản phẩm (from hidden input of custom dropdown)
+    const danhMuc = document.getElementById('danhMuc').value;
+    if (!danhMuc) {
+      document.getElementById('error-danhmuc').innerText = '* Vui lòng chọn danh mục!';
+      errors++;
+    }
+
+    // --- LOGIC VALIDATION ẢNH ĐÃ SỬA ĐỔI ---
+    const imagePreviewSrc = document.getElementById('image-preview').src;
+
+    if (isEditMode) {
+      // Nếu ở chế độ chỉnh sửa:
+      // - Nếu người dùng đã chọn ảnh mới (newImageSelected là true) => OK
+      // - Nếu người dùng KHÔNG chọn ảnh mới (newImageSelected là false) VÀ ảnh hiện tại KHÔNG phải là placeholder (initialImageSrc không phải placeholder) => OK (giữ ảnh cũ)
+      // - Nếu người dùng KHÔNG chọn ảnh mới VÀ ảnh hiện tại LÀ placeholder (initialImageSrc là placeholder) => Báo lỗi (vì ảnh gốc bị thiếu hoặc đã bị xóa)
+      if (!newImageSelected && (imagePreviewSrc === 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' || !initialImageSrc || initialImageSrc === '')) {
+          // This case implies an existing image was removed or was never loaded correctly.
+          document.getElementById('error-file').innerText = '* Vui lòng chọn ảnh sản phẩm!';
+          errors++;
+      }
+      // Nếu newImageSelected là true, hoặc imagePreviewSrc không phải placeholder, thì không báo lỗi.
+      // Dù là ảnh cũ đã được giữ hay ảnh mới được chọn, đều coi là hợp lệ.
+
+    } else {
+      // Nếu ở chế độ thêm mới:
+      // BẮT BUỘC phải có ảnh mới được chọn
+      if (!newImageSelected || imagePreviewSrc === 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=') {
+        document.getElementById('error-file').innerText = '* Vui lòng chọn ảnh sản phẩm!';
+        errors++;
+      }
+    }
+    // --- KẾT THÚC LOGIC VALIDATION ẢNH ĐÃ SỬA ĐỔI ---
+
+
+    // If no errors, show the custom confirmation modal
+    if (errors === 0) {
+      productDataToUpdate = { // Store data temporarily if validation passes
+        tenSanPham: ten,
+        moTa: moTa,
+        gia: cleanedGia,
+        soLuong: Number(soLuong),
+        mauSac: mauSac,
+        kichThuoc: kichThuoc,
+        danhMuc: danhMuc,
+        // Nếu người dùng đã chọn ảnh mới, gửi file mới. Ngược lại, nếu ở chế độ chỉnh sửa, giữ lại ảnh ban đầu (initialImageSrc).
+        // Đối với backend, bạn sẽ cần gửi initialImageSrc nếu không có file mới.
+        imageFile: newImageSelected ? fileInput.files[0] : null,
+        currentImageUrl: isEditMode && !newImageSelected ? initialImageSrc : null // Gửi ảnh URL hiện tại nếu không có ảnh mới được chọn
+      };
+      confirmationModal.style.display = 'flex'; // Show the confirmation modal
+    }
+  });
+
+  // Event listener for OK button in confirmation modal (This is where the actual update happens)
+  confirmOkBtn.addEventListener('click', () => {
+    confirmationModal.style.display = 'none'; // Hide the confirmation modal
+
+    if (productDataToUpdate) {
+      // Simulate successful update/add
+      console.log('Performing update/add with data:', productDataToUpdate);
+
+      // --- TODO: Gửi dữ liệu productDataToUpdate đến backend ở đây ---
+      // Ví dụ:
+      // fetch('/api/update-product', {
+      //  method: 'POST', // or 'PUT'
+      //  headers: { 'Content-Type': 'application/json' },
+      //  body: JSON.stringify(productDataToUpdate)
+      // })
+      // .then(response => response.json())
+      // .then(data => {
+      //  console.log('Backend response:', data);
+      //  editSuccessModal.style.display = 'flex'; // Show success modal
+      // })
+      // .catch(error => {
+      //  console.error('Error updating product:', error);
+      //  alert('Đã xảy ra lỗi khi cập nhật sản phẩm.');
+      // });
+      // --- END TODO ---
+
+      // For demonstration, directly show the success modal after confirmation
+      editSuccessModal.style.display = 'flex'; // Show the new success modal
+
+      productDataToUpdate = null; // Clear stored data after initiating action
+    }
+  });
+
+  // Event listener for Hủy button in confirmation modal
+  confirmCancelBtn.addEventListener('click', () => {
+    confirmationModal.style.display = 'none'; // Hide the modal
+    productDataToUpdate = null; // Clear stored data if user cancels
+  });
+
+  // Event listener for OK button in Edit Success Modal (NEW)
+  // Chỉ còn lại nút này là lựa chọn duy nhất của người dùng
+  okEditSuccessBtn.addEventListener('click', function() {
+    editSuccessModal.style.display = 'none'; // Hide the success modal
+    window.location.href = 'QLDSSP.html'; // Redirect to product list
+  });
+
+  // Đã loại bỏ Event listener cho nút 'Đóng' và dấu 'X' trong editSuccessModal
+
+  // Close modals if user clicks outside of modal content
+  window.addEventListener('click', (event) => {
+    if (event.target == confirmationModal) {
+      confirmationModal.style.display = 'none';
+      productDataToUpdate = null; // Clear stored data if confirmation is dismissed
+    }
+    // LƯU Ý: Không đóng editSuccessModal khi click ra ngoài nếu bạn muốn người dùng bắt buộc nhấn nút "Về danh sách sản phẩm"
+    // Nếu bạn vẫn muốn click ngoài để đóng, hãy bỏ comment dòng dưới đây:
+    // if (event.target == editSuccessModal) {
+    //   editSuccessModal.style.display = 'none';
+    //   // Bạn có thể cân nhắc chuyển hướng ở đây nếu muốn, hoặc để người dùng tự nhấn nút
+    //   // window.location.href = 'QLDSSP.html';
+    // }
+  });
+</script>
+</body>
+</html>
