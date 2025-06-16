@@ -146,11 +146,18 @@
         <option>Thanh toán bằng TK ngân hàng</option>
       </select>
       <div class="payment-method-list">
-        <label> <input type="radio" name="payment-method" /> COD </label>
-        <label> <input type="radio" name="payment-method" /> Paypal </label>
-        <label> <input type="radio" name="payment-method" checked /> Tài khoản ngân hàng </label>
+        <label>
+    <input type="radio" name="payment-method" value="cod" /> COD
+  </label>
+  <label>
+    <input type="radio" name="payment-method" value="paypal" /> Paypal
+  </label>
+  <label>
+    <input type="radio" name="payment-method" value="bank" checked /> Tài khoản ngân hàng
+  </label>
       </div>
     </div>
+    <div id="balance-warning" class="center-message">Số dư không đủ</div>
 
     <!-- Cách thức vận chuyển -->
     <div class="option-group">
@@ -185,14 +192,17 @@
         </dl>
       </section>
 
-      <!-- Đặt hàng -->
 <section class="order-action">
   <p>Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý mua sản phẩm</p>
-  <button type="button" class="btn-order" onclick="showSuccessMessage()">Đặt hàng</button>
-  <div id="success-message" class="alert-success" >
-    Bạn đã đặt hàng thành công!
+  <button type="button" class="btn-order" onclick="showSuccessPopup()">Đặt hàng</button>
+</section>
+
+<!-- THÔNG BÁO ĐẶT HÀNG THÀNH CÔNG -->
+<div id="order-success-popup" class="popup-success">
+  <div class="popup-content">
+    🎉 Bạn đã đặt hàng thành công!
   </div>
-</section
+</div>
 
 
 
@@ -229,16 +239,32 @@
     </div>
   </div>
 </footer>
-<a href="../../dung/ui/home.html" id="gotoPage" style="display:none;"></a>
 <script>
   function showSuccessPopup() {
     const popup = document.getElementById("order-success-popup");
     popup.style.display = "flex";
 
     setTimeout(() => {
-      document.getElementById("gotoPage").click();
-    }, 3000);
+       
+    }, 2.3000);
+    window.location.href = "../../dung/ui/home.html";
   }
+  const radios = document.querySelectorAll('input[name="payment-method"]');
+  const warning = document.getElementById("balance-warning");
+
+  radios.forEach((radio) => {
+    radio.addEventListener("change", function () {
+      if (this.value === "cod"||this.value==="paypal") {
+        warning.style.display = "block";
+
+        setTimeout(() => {
+          warning.style.display = "none";
+        }, 5000);
+      } else {
+        warning.style.display = "none";
+      }
+    });
+  });
 </script>
 
 
