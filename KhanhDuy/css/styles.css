@@ -1,0 +1,81 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.address-box, .add-form {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  width: 350px;
+  margin: 30px auto;
+  box-sizing: border-box;
+}
+
+h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.address-item {
+  margin-bottom: 15px;
+}
+
+.address-item input[type="radio"] {
+  margin-right: 10px;
+}
+.address-item.selected {
+  color: red;
+}
+
+.address-item.red {
+  color: red;
+}
+
+.add-new {
+  font-weight: 500;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: black;
+}
+
+.add-new::before {
+  content: "+";
+  font-size: 20px;
+  margin-right: 6px;
+}
+
+.confirm-button, .cancel-button {
+  display: inline-block;
+  width: 45%;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.cancel-button {
+  margin-right: 10%;
+  background-color: #555;
+}
+
+input[type="text"], textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: inline-block;
+}

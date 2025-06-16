@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý địa chỉ</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<!-- Form chọn địa chỉ -->
+<div class="address-box" id="addressBox">
+  <h3>Địa chỉ</h3>
+
+  <div class="address-item">
+    <label>
+      <input type="radio" name="address" checked>
+      0345 343 339 -- Đặng Khánh Duy <br>
+      Ninh Lai - Sơn Dương - Tuyên Quang
+    </label>
+  </div>
+
+  <div class="address-item">
+    <label>
+      <input type="radio" name="address">
+      0725 321 134 -- Lưu Văn Dũng <br>
+      Đại học Thủy lợi - 175 Tây Sơn
+    </label>
+  </div>
+
+  <div class="address-item">
+    <label>
+      <input type="radio" name="address">
+      0345 343 339 -- Anh Quân <br>
+      Thiện Kế - Sơn Nam - Tuyên Quang
+    </label>
+  </div>
+
+  <div class="add-new" onclick="showAddForm()">Thêm địa chỉ mới</div>
+
+  <a href="index.html" class="confirm-button" >Xác nhận</a>
+</div>
+
+<!-- Form thêm địa chỉ -->
+<div class="add-form" id="addForm" style="display: none;">
+  <h3>Địa chỉ</h3>
+  <label for="phone">Số Điện Thoại</label>
+  <input type="text" id="phone" value="0987 945 946">
+
+  <label for="name">Họ tên:</label>
+  <input type="text" id="name" placeholder="Nhập họ và tên">
+
+  <label for="address">Địa chỉ:</label>
+  <textarea id="address" rows="3" placeholder="Nhập địa chỉ"></textarea>
+
+  <button class="cancel-button" onclick="cancelAdd()">Hủy</button>
+  <button class="confirm-button" onclick="submitAddress()">Xác Nhận</button>
+</div>
+
+<script>
+  const radios = document.querySelectorAll('input[type="radio"][name="address"]');
+  radios.forEach(radio => {
+    radio.addEventListener('change', function () {
+      document.querySelectorAll('.address-item').forEach(item => {
+        item.classList.remove('selected');
+      });
+      this.closest('.address-item').classList.add('selected');
+    });
+  });
+
+  // Chọn sẵn radio nào thì đánh selected luôn khi load
+  window.addEventListener('DOMContentLoaded', () => {
+    const checkedRadio = document.querySelector('input[type="radio"][name="address"]:checked');
+    if (checkedRadio) {
+      checkedRadio.closest('.address-item').classList.add('selected');
+    }
+  });
+  function showAddForm() {
+    document.getElementById('addressBox').style.display = 'none';
+    document.getElementById('addForm').style.display = 'block';
+  }
+
+  function cancelAdd() {
+    document.getElementById('addForm').style.display = 'none';
+    document.getElementById('addressBox').style.display = 'block';
+  }
+
+  function submitAddress() {
+  const phone = document.getElementById('phone').value.trim();
+  const name = document.getElementById('name').value.trim();
+  const address = document.getElementById('address').value.trim();
+
+  if (!phone || !name || !address) {
+    alert('Vui lòng điền đầy đủ thông tin');
+    return;
+  }
+
+  const container = document.getElementById('addressBox');
+  const newDiv = document.createElement('div');
+  newDiv.className = 'address-item selected'; // <- Gán class 'selected'
+
+  newDiv.innerHTML = `
+    <label>
+      <input type="radio" name="address" checked>
+      ${phone} -- ${name}<br>
+      ${address}
+    </label>
+  `;
+
+  // Bỏ chọn các radio khác & xóa class selected cũ
+  const radios = container.querySelectorAll('input[type=radio]');
+  const items = container.querySelectorAll('.address-item');
+  radios.forEach(r => r.checked = false);
+  items.forEach(i => i.classList.remove('selected'));
+
+  // Thêm vào trước nút "Thêm địa chỉ mới"
+  const addNewDiv = container.querySelector('.add-new');
+  container.insertBefore(newDiv, addNewDiv);
+
+  // Gán sự kiện đổi màu cho radio mới
+  const radio = newDiv.querySelector('input[type="radio"]');
+  radio.addEventListener('change', function () {
+    document.querySelectorAll('.address-item').forEach(item => {
+      item.classList.remove('selected');
+    });
+    this.closest('.address-item').classList.add('selected');
+  });
+
+  // Hiển thị lại danh sách địa chỉ
+  document.getElementById('addForm').style.display = 'none';
+  container.style.display = 'block';
+
+  // Reset form
+  document.getElementById('name').value = '';
+  document.getElementById('address').value = '';
+}
+
+</script>
+
+</body>
+</html>

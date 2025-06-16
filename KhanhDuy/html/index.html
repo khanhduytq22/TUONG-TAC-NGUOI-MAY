@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MENSHOP - Thanh toán</title>
+    <link rel="stylesheet" href="../css/styles1.css" />
+  </head>
+  <body>
+<!-- Logo Bar -->
+<!-- Logo Bar -->
+<div class="bg-dark text-white px-4 py-3 d-flex justify-content-between align-items-center">
+  <!-- Bên trái: Logo + MENSHOP -->
+<!-- Logo Bar -->
+<div class="logo-bar">
+  <div class="logo-left">
+    <img src="../img/logo.svg" alt="Logo" class="logo-img" />
+    <strong class="logo-text">MENSHOP</strong>
+  </div>
+  <div class="logo-right">
+    <span>Theo dõi đơn hàng</span>
+    <span>Dễ dàng trả hàng</span>
+    <span>Trợ giúp</span>
+  </div>
+</div>
+
+</div>
+
+
+
+    <!-- Main Navbar -->
+    <header class="main-header">
+  <div class="nav-container">
+    <!-- Bên trái: Menu danh mục -->
+    <div class="menu-left">
+      <a href="#">Nam</a>
+      <a href="#">Nữ</a>
+      <a href="#">Trẻ em</a>
+      <a href="#">Giảm giá</a>
+      <a href="#">Sắp và mới ra mắt</a>
+    </div>
+
+    <!-- Bên phải: Icon và tìm kiếm -->
+    <div class="menu-right">
+      <a href="#"><img src="../img/search.jpg" alt="Tìm kiếm" /></a>
+      <input type="text" class="search-box" placeholder="Tìm kiếm..." />
+      <a href="#"><img src="../img/acc.jpg" alt="Tài khoản" /></a>
+      <a href="#"><img src="../img/fav.jpg" alt="Yêu thích" /></a>
+      <div class="cart-icon">
+        <a href="#"><img src="../img/cart.jpg" alt="Giỏ hàng" /></a>
+        <span class="cart-badge"></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+
+
+
+    </div>
+
+    <main class="container">
+      <h2 class="page-title">Thanh toán</h2>
+
+      <!-- Thông tin giao hàng -->
+      <section class="shipping-info">
+        <h3>Nhập thông tin - địa chỉ giao hàng</h3>
+        <form>
+          <div class="form-group">
+            <label for="fullname">Họ tên:</label>
+            <input type="text" id="fullname" name="fullname" placeholder="Nhập họ và tên" required />
+          </div>
+          <div class="form-group">
+            <label for="address">Địa chỉ:</label>
+            <input type="text" id="address" name="address" placeholder="Nhập địa chỉ" required />
+            <a href="themdiachi.html" class="btn-add-address" aria-label="Thêm địa chỉ">+</a>
+          </div>
+        </form>
+      </section>
+
+      <!-- Sản phẩm -->
+<section class="order-summary">
+  <h3>Sản phẩm</h3>
+  <ul class="product-list">
+    <li class="product-item">
+      <img src="../img/image6.png" alt="Nike Air Force 1" class="product-image" />
+      <div class="product-details">
+        <div class="product-header">
+          <span class="label">Tên sản phẩm</span>
+          <span class="label">Đơn giá</span>
+          <span class="label">Số lượng</span>
+          <span class="label">Thành tiền</span>
+        </div>
+        <div class="product-row">
+          <span class="product-name">Nike Air Force 1</span>
+          <span class="product-price">1.300.000 đ</span>
+          <span class="product-quantity">2</span>
+          <span class="product-total">2.600.000 đ</span>
+        </div>
+      </div>
+    </li>
+
+    <li class="product-item">
+      <img src="../img/image3.png" alt="Nike Air Force 1" class="product-image" />
+      <div class="product-details">
+        <div class="product-header">
+          <span class="label">Tên sản phẩm</span>
+          <span class="label">Đơn giá</span>
+          <span class="label">Số lượng</span>
+          <span class="label">Thành tiền</span>
+        </div>
+        <div class="product-row">
+          <span class="product-name">Nike Air Force 1</span>
+          <span class="product-price">1.300.000 đ</span>
+          <span class="product-quantity">2</span>
+          <span class="product-total">2.600.000 đ</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+
+<section class="payment-options">
+  <h3>Các lựa chọn thanh toán</h3>
+  <div class="payment-options-grid">
+    <!-- Mã giảm giá -->
+    <div class="option-group">
+      <h4>Mã giảm giá</h4>
+      <label for="voucher-select" class="visually-hidden">Chọn mã giảm giá</label>
+      <select id="voucher-select" aria-label="Chọn mã giảm giá">
+        <option>Giảm 300.000 đ</option>
+      </select>
+      <div class="voucher-list">
+        <label> <input type="checkbox" checked /> Giảm 300.000 đ (Còn 1) </label>
+        <label> <input type="checkbox" /> Giảm 25%, tối đa 200.000 đ (Còn 1) </label>
+      </div>
+    </div>
+
+    <!-- Phương thức thanh toán -->
+    <div class="option-group">
+      <h4>Phương thức thanh toán</h4>
+      <label for="payment-method-select" class="visually-hidden">Chọn phương thức thanh toán</label>
+      <select id="payment-method-select" aria-label="Chọn phương thức thanh toán">
+        <option>Thanh toán bằng TK ngân hàng</option>
+      </select>
+      <div class="payment-method-list">
+        <label> <input type="radio" name="payment-method" /> COD </label>
+        <label> <input type="radio" name="payment-method" /> Paypal </label>
+        <label> <input type="radio" name="payment-method" checked /> Tài khoản ngân hàng </label>
+      </div>
+    </div>
+
+    <!-- Cách thức vận chuyển -->
+    <div class="option-group">
+      <h4>Cách thức vận chuyển</h4>
+      <label for="shipping-method-select" class="visually-hidden">Chọn cách thức vận chuyển</label>
+      <select id="shipping-method-select" aria-label="Chọn cách thức vận chuyển">
+        <option>Nhanh</option>
+      </select>
+      <div class="shipping-method-list">
+        <label> <input type="radio" name="shipping-method" checked /> Nhanh - 50.000 đ </label>
+        <label> <input type="radio" name="shipping-method" /> Tiết kiệm - 30.000 đ </label>
+      </div>
+    </div>
+  </div>
+</section>
+
+        
+        
+      </section>
+
+      <!-- Tổng đơn -->
+      <section class="order-total">
+        <dl>
+          <dt>Tổng tiền hàng:</dt>
+          <dd>12.000.000 đ</dd>
+          <dt>Voucher giảm:</dt>
+          <dd>300.000 đ</dd>
+          <dt>Phí vận chuyển:</dt>
+          <dd>50.000 đ</dd>
+          <dt>Tổng thanh toán:</dt>
+          <dd>11.750.000 đ</dd>
+        </dl>
+      </section>
+
+      <!-- Đặt hàng -->
+<section class="order-action">
+  <p>Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý mua sản phẩm</p>
+  <button type="button" class="btn-order" onclick="showSuccessMessage()">Đặt hàng</button>
+  <div id="success-message" class="alert-success" >
+    Bạn đã đặt hàng thành công!
+  </div>
+</section
+
+
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-column">
+      <h4>Về ShoeStyle</h4>
+      <p>Cung cấp các sản phẩm giày dép nam chất lượng cao với giá cả hợp lý.</p>
+    </div>
+    <div class="footer-column">
+      <h4>Liên kết</h4>
+      <ul>
+        <li><a href="#">Chính sách đổi trả</a></li>
+        <li><a href="#">Chính sách bảo hành</a></li>
+        <li><a href="#">Điều khoản dịch vụ</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Liên hệ</h4>
+      <p>Hotline: 1900 1234</p>
+      <p>Email: contact@shoestyle.com</p>
+      <p>Địa chỉ: 123 Đường ABC, Quận 1, TP.HCM</p>
+    </div>
+    <div class="footer-column">
+      <h4>Kết nối với chúng tôi</h4>
+      <div class="social-icons">
+        <a href="#"><img src="../img/fb.jpg" alt="Facebook" /></a>
+        <a href="#"><img src="../img/inta.jpg" alt="Instagram" /></a>
+        <a href="#"><img src="../img/youtube.jpg" alt="YouTube" /></a>
+      </div>
+    </div>
+  </div>
+</footer>
+<a href="../../dung/ui/home.html" id="gotoPage" style="display:none;"></a>
+<script>
+  function showSuccessPopup() {
+    const popup = document.getElementById("order-success-popup");
+    popup.style.display = "flex";
+
+    setTimeout(() => {
+      document.getElementById("gotoPage").click();
+    }, 3000);
+  }
+</script>
+
+
+  </body>
+</html>
