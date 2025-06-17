@@ -336,7 +336,7 @@
 <body>
   <div class="sidebar">
     <div class="logo-container">
-      <img src="../img/1.png" alt="MenShop Logo" class="logo">
+      <img src="img/1.png" alt="MenShop Logo" class="logo">
     </div>
     <nav>
       <a href="#" class="active"><i class="bi bi-box-seam"></i> Sản phẩm</a>
@@ -403,9 +403,9 @@
   <script>
     // Dữ liệu sản phẩm MẪU - Sẽ reset về trạng thái này khi tải lại trang
     let products = [
-        { id: 1, tenSanPham: "GIÀY ULTRABOUNCE", gia: 2400000, soLuong: 243, mauSac: "Trắng", danhMuc: "Sneaker", hinhAnhUrl: "../img/2.png", moTa: "Giày thể thao siêu nhẹ." },
-        { id: 2, tenSanPham: "GIÀY SAMBA OG", gia: 2700000, soLuong: 99, mauSac: "Đen", danhMuc: "Sneaker", hinhAnhUrl: "../img/2.png", moTa: "Biểu tượng phong cách." },
-        { id: 3, tenSanPham: "ÁO THUN CỔ TRÒN", gia: 500000, soLuong: 150, mauSac: "Xanh", danhMuc: "Áo thun", hinhAnhUrl: "../img/2.png", moTa: "Chất liệu cotton mềm mại." }
+        { id: 1, tenSanPham: "GIÀY ULTRABOUNCE", gia: 2400000, soLuong: 243, mauSac: "Trắng", danhMuc: "Sneaker", hinhAnhUrl: "img/2.png", moTa: "Giày thể thao siêu nhẹ." },
+        { id: 2, tenSanPham: "GIÀY SAMBA OG", gia: 2700000, soLuong: 99, mauSac: "Đen", danhMuc: "Sneaker", hinhAnhUrl: "img/2.png", moTa: "Biểu tượng phong cách." },
+        { id: 3, tenSanPham: "ÁO THUN CỔ TRÒN", gia: 500000, soLuong: 150, mauSac: "Xanh", danhMuc: "Áo thun", hinhAnhUrl: "img/2.png", moTa: "Chất liệu cotton mềm mại." }
     ];
     let nextProductId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
 
