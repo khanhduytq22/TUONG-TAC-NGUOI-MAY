@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thanh toán</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles1.css" />
+</head>
+<body>
+
+<div id="navbar"></div>
+
+<main class="container">
+  <h2 class="page-title">Thanh toán</h2>
+
+  <section class="shipping-info">
+    <h3>Nhập thông tin - địa chỉ giao hàng</h3>
+    <form>
+      <div class="form-group">
+        <label for="fullname">Họ tên:</label>
+        <input type="text" id="fullname" name="fullname" placeholder="Nhập họ và tên" required />
+      </div>
+      <div class="form-group">
+        <label for="address">Địa chỉ:</label>
+        <input type="text" id="address" name="address" placeholder="Nhập địa chỉ" required />
+        <a href="#" class="btn-add-address" aria-label="Thêm địa chỉ" data-bs-toggle="modal" data-bs-target="#addAddressModal">+</a>
+      </div>
+    </form>
+  </section>
+
+  <section class="order-summary">
+    <h3>Sản phẩm</h3>
+    <ul class="product-list">
+      <li class="product-item">
+        <img src="../img/image6.png" alt="Nike Air Force 1" class="product-image" />
+        <div class="product-details">
+          <div class="product-header">
+            <span class="label">Tên sản phẩm</span>
+            <span class="label">Đơn giá</span>
+            <span class="label">Số lượng</span>
+            <span class="label">Thành tiền</span>
+          </div>
+          <div class="product-row">
+            <span class="product-name">Nike Air Force 1</span>
+            <span class="product-price">1.300.000 đ</span>
+            <span class="product-quantity">2</span>
+            <span class="product-total">2.600.000 đ</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="product-item">
+        <img src="../img/image3.png" alt="Nike Air Force 1" class="product-image" />
+        <div class="product-details">
+          <div class="product-header">
+            <span class="label">Tên sản phẩm</span>
+            <span class="label">Đơn giá</span>
+            <span class="label">Số lượng</span>
+            <span class="label">Thành tiền</span>
+          </div>
+          <div class="product-row">
+            <span class="product-name">Nike Air Force 1</span>
+            <span class="product-price">1.300.000 đ</span>
+            <span class="product-quantity">2</span>
+            <span class="product-total">2.600.000 đ</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="payment-options">
+    <h3>Các lựa chọn thanh toán</h3>
+    <div class="payment-options-grid">
+      <div class="option-group">
+        <h4>Mã giảm giá</h4>
+        <label for="voucher-select" class="visually-hidden">Chọn mã giảm giá</label>
+        <select id="voucher-select" aria-label="Chọn mã giảm giá">
+          <option>Giảm 300.000 đ</option>
+        </select>
+        <div class="voucher-list">
+          <label> <input type="checkbox" checked /> Giảm 300.000 đ (Còn 1) </label>
+          <label> <input type="checkbox" /> Giảm 25%, tối đa 200.000 đ (Còn 1) </label>
+        </div>
+      </div>
+
+      <div class="option-group">
+        <h4>Phương thức thanh toán</h4>
+        <label for="payment-method-select" class="visually-hidden">Chọn phương thức thanh toán</label>
+        <select id="payment-method-select" aria-label="Chọn phương thức thanh toán">
+          <option>Thanh toán bằng TK ngân hàng</option>
+        </select>
+        <div class="payment-method-list">
+          <label>
+            <input type="radio" name="payment-method" value="cod" /> COD
+          </label>
+          <label>
+            <input type="radio" name="payment-method" value="paypal" /> Paypal
+          </label>
+          <label>
+            <input type="radio" name="payment-method" value="bank" checked /> Tài khoản ngân hàng
+          </label>
+        </div>
+      </div>
+      <div id="balance-warning" class="center-message">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        Số dư tài khoản không đủ!Vui lòng chọn hình thức thanh toán khác.
+
+      </div>
+
+      <div class="option-group">
+        <h4>Cách thức vận chuyển</h4>
+        <label for="shipping-method-select" class="visually-hidden">Chọn cách thức vận chuyển</label>
+        <select id="shipping-method-select" aria-label="Chọn cách thức vận chuyển">
+          <option>Nhanh</option>
+        </select>
+        <div class="shipping-method-list">
+          <label> <input type="radio" name="shipping-method" checked /> Nhanh - 50.000 đ </label>
+          <label> <input type="radio" name="shipping-method" /> Tiết kiệm - 30.000 đ </label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="order-total">
+    <dl>
+      <dt>Tổng tiền hàng:</dt>
+      <dd>12.000.000 đ</dd>
+      <dt>Voucher giảm:</dt>
+      <dd>300.000 đ</dd>
+      <dt>Phí vận chuyển:</dt>
+      <dd>50.000 đ</dd>
+      <dt>Tổng thanh toán:</dt>
+      <dd>11.750.000 đ</dd>
+    </dl>
+  </section>
+
+  <section class="order-action">
+    <p>Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý mua sản phẩm</p>
+    <button type="button" class="btn-order" onclick="showSuccessPopup()">Đặt hàng</button>
+  </section>
+
+  <div id="order-success-popup" class="popup-success">
+    <div class="popup-content">
+      🎉 Bạn đã đặt hàng thành công!
+    </div>
+  </div>
+  <!-- Modal thêm địa chỉ -->
+  <div class="modal fade" id="addAddressModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content p-4">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">Thêm địa chỉ mới</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <label for="phone">Số Điện Thoại</label>
+          <input type="text" id="phone" class="form-control mb-2" value="0987 945 946">
+
+          <label for="name">Họ tên:</label>
+          <input type="text" id="name" class="form-control mb-2" placeholder="Nhập họ và tên">
+
+          <label for="address1">Địa chỉ:</label>
+          <textarea id="address1" class="form-control mb-3" rows="3" placeholder="Nhập địa chỉ"></textarea>
+        </div>
+
+        <div class="modal-footer border-0">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button class="btn btn-primary" data-bs-dismiss="modal">Xác Nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<!-- 📦 Footer -->
+<div id="footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function showSuccessPopup() {
+    const popup = document.getElementById("order-success-popup");
+    popup.style.display = "flex";
+
+    // Chỉnh sửa thời gian chờ trước khi chuyển hướng để người dùng có thể thấy popup
+    setTimeout(() => {
+      window.location.href = "../../dung/ui/home.html"; // Đảm bảo đường dẫn này đúng với cấu trúc thư mục của bạn
+    }, 2300); // 2.3 giây
+  }
+
+  const radios = document.querySelectorAll('input[name="payment-method"]');
+  const warning = document.getElementById("balance-warning");
+
+  radios.forEach((radio) => {
+    radio.addEventListener("change", function () {
+      if (this.value === "cod" || this.value === "paypal") {
+        warning.style.display = "block";
+
+        setTimeout(() => {
+          warning.style.display = "none";
+        }, 5000);
+      } else {
+        warning.style.display = "none";
+      }
+    });
+  });
+  fetch('nav.html')
+    .then(res => res.text())
+    .then(data => document.getElementById('navbar').innerHTML = data);
+
+  fetch('footer.html')
+    .then(res => res.text())
+    .then(data => document.getElementById('footer').innerHTML = data);
+</script>
+</body>
+</html>
