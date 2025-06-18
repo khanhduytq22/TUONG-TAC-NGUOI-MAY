@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý sản phẩm - MenShop</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    /* Base Styles */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f7f7;
+      display: flex; /* Use flexbox for main layout */
+      min-height: 100vh; /* Ensure body takes full viewport height */
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      width: 200px;
+      background-color: #011627;
+      color: white;
+      /* height: 100vh; Removed fixed height, using flex for full height */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0; /* Prevent sidebar from shrinking */
+    }
+    .sidebar .logo-container {
+        padding: 20px 0; /* Add padding around the logo */
+        text-align: center;
+    }
+    .sidebar img.logo {
+      width: 100px;
+      display: block;
+      margin: 0 auto; /* Center logo horizontally */
+    }
+    .sidebar nav {
+      display: flex;
+      flex-direction: column;
+      /* align-items: center; */ /* Align items to start for clearer text */
+      flex-grow: 1; /* Allow navigation to take available space */
+      padding-top: 20px; /* Space from logo */
+    }
+    .sidebar nav a {
+      color: white;
+      text-decoration: none;
+      padding: 15px 25px; /* Better padding for clickable areas */
+      display: flex;
+      align-items: center;
+      gap: 15px; /* Increased gap for better spacing */
+      font-size: 16px;
+      transition: background-color 0.3s ease; /* Smooth hover effect */
+    }
+    .sidebar nav a:hover,
+    .sidebar nav a.active { /* Add active state for current page */
+        background-color: #0a2d48; /* Slightly lighter blue for hover/active */
+    }
+    .sidebar nav a i {
+      font-size: 20px; /* Slightly larger icons */
+    }
+    .logout {
+      padding: 20px 0; /* Add padding around logout section */
+    }
+    .logout a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px; /* Increased gap */
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      padding: 15px 0; /* Consistent padding */
+    }
+    .logout a:hover {
+        background-color: #0a2d48;
+    }
+
+    /* Main Content Styles */
+    .main {
+      flex-grow: 1; /* Allow main content to take remaining width */
+      padding: 40px;
+      box-sizing: border-box; /* Include padding in element's total width */
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #333;
+    }
+    .header h2 {
+      font-size: 22px;
+      background-color: #D9D9D9;
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: 700;
+      color: #000;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      align-items: center; /* Align items vertically */
+    }
+    .actions input[type="text"] {
+      padding: 8px 12px; /* Slightly more padding for input */
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .actions button {
+      padding: 8px 15px; /* Consistent padding with input */
+      background-color: #007bff; /* Default blue for buttons */
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    .actions button:hover {
+      background-color: #0056b3;
+    }
+    .actions button.create-product { /* Specific style for create button */
+        background-color: #28a745; /* Green for "Create" */
+    }
+    .actions button.create-product:hover {
+        background-color: #218838;
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05); /* Subtle shadow for table */
+      border-radius: 8px; /* Rounded corners for table */
+      overflow: hidden; /* Ensures rounded corners apply to content */
+    }
+    th, td {
+      padding: 15px; /* More padding for table cells */
+      border-bottom: 1px solid #eee; /* Lighter border between rows */
+      text-align: left;
+      font-size: 15px;
+      color: #333;
+    }
+    th {
+      background-color: #e9ecef; /* Lighter background for header */
+      font-weight: bold;
+      border-top: none; /* No top border for header cells */
+      color: #555;
+    }
+    tbody tr:last-child td {
+        border-bottom: none; /* No border for the last row */
+    }
+    tbody tr:hover {
+        background-color: #f8f9fa; /* Light hover effect on rows */
+    }
+
+    /* Style for image in table */
+    .product-image {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .action-icons {
+      display: flex;
+      gap: 15px;
+      font-size: 1.2em; /* Relative font size */
+      color: #333;
+    }
+    .action-icons i {
+        cursor: pointer;
+        transition: color 0.2s ease; /* Smooth color transition */
+    }
+    .action-icons i.bi-pencil-square {
+      color: #0d6efd; /* Blue */
+    }
+    .action-icons i.bi-pencil-square:hover {
+      color: #0a58ca; /* Darker blue on hover */
+    }
+    .action-icons i.bi-trash {
+      color: #dc3545; /* Red */
+    }
+    .action-icons i.bi-trash:hover {
+      color: #b02a37; /* Darker red on hover */
+    }
+
+    /* Custom Confirmation Modal Styles for Deletion */
+    .delete-modal, .success-modal {
+      display: none; /* IMPORTANT: Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 3000; /* Sit on top, higher than other modals/elements */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgba(0,0,0,0.5); /* Black w/ more opacity */
+      justify-content: center; /* Used by JS to make it flex when active */
+      align-items: center; /* Used by JS to make it flex when active */
+    }
+
+    .delete-modal-content, .success-modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 30px;
+      border: 1px solid #ddd; /* Lighter border */
+      width: 90%;
+      max-width: 450px; /* Increased max-width for better content display */
+      border-radius: 12px; /* More rounded corners */
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2); /* Stronger shadow for depth */
+      text-align: center;
+      position: relative; /* For close button positioning */
+    }
+
+    /* Style for close button on both modals */
+    .delete-modal-close, .success-modal-close {
+      color: #aaa;
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .delete-modal-close:hover,
+    .delete-modal-close:focus,
+    .success-modal-close:hover,
+    .success-modal-close:focus {
+      color: #555;
+      text-decoration: none;
+    }
+
+    /* Delete modal specific styles */
+    .delete-modal-icon {
+        font-size: 48px; /* Larger icon */
+        color: #f44336; /* Red warning color */
+        margin-bottom: 20px;
+    }
+
+    .delete-modal-header {
+      font-size: 1.5rem; /* Larger header text */
+      margin-bottom: 15px;
+      font-weight: 700; /* Bolder */
+      color: #333;
+    }
+
+    .delete-modal-body {
+      font-size: 1.1rem; /* Slightly larger body text */
+      margin-bottom: 30px;
+      color: #666;
+    }
+
+    .delete-modal-buttons {
+      display: flex;
+      justify-content: center; /* Center buttons */
+      gap: 20px; /* Space between buttons */
+    }
+
+    .delete-modal-buttons button {
+      padding: 12px 30px; /* More padding for bigger buttons */
+      font-size: 1rem;
+      border-radius: 8px; /* Rounded buttons */
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 120px; /* Ensure minimum width for buttons */
+    }
+
+    .delete-modal-buttons .btn-cancel {
+      background-color: #e0e0e0; /* Neutral grey for cancel */
+      color: #333;
+      border: 1px solid #ccc;
+    }
+
+    .delete-modal-buttons .btn-cancel:hover {
+      background-color: #d0d0d0;
+      border-color: #bbb;
+    }
+
+    .delete-modal-buttons .btn-confirm-delete {
+      background-color: #dc3545; /* Strong red for confirm delete */
+      color: white;
+      border: 1px solid #dc3545;
+    }
+
+    .delete-modal-buttons .btn-confirm-delete:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
+
+    /* Success modal specific styles */
+    .success-modal-icon {
+        font-size: 48px;
+        color: #28a745;
+        margin-bottom: 20px;
+    }
+
+    .success-modal-message {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #28a745; /* Green text */
+        margin-bottom: 20px;
+    }
+
+    .success-modal-button button {
+        padding: 10px 25px;
+        font-size: 1rem;
+        background-color: #007bff; /* Blue button, can be green too */
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .success-modal-button button:hover {
+        background-color: #0056b3;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo-container">
+      <img src="img/1.png" alt="MenShop Logo" class="logo">
+    </div>
+    <nav>
+      <a href="#" class="active"><i class="bi bi-box-seam"></i> Sản phẩm</a>
+    </nav>
+    <div class="logout">
+      <a href="#"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="header">
+      <h1>Welcome to MenShop</h1>
+      <h2>QUẢN LÝ SẢN PHẨM</h2>
+    </div>
+    <div class="actions">
+      <button class="create-product" id="createProductBtn"><i class="bi bi-plus-circle"></i> Tạo sản phẩm</button>
+      <input type="text" placeholder="Tìm kiếm theo tên sản phẩm" id="searchInput">
+      <button id="searchBtn"><i class="bi bi-search"></i></button>
+    </div>
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên sản phẩm</th>
+          <th>Giá</th>
+          <th>Tồn kho</th>
+          <th>Màu sắc</th>
+          <th>Danh mục</th>
+          <th>Hình Ảnh</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody id="productTableBody">
+        <tr>
+            <td colspan="8">Đang tải dữ liệu sản phẩm...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="deleteConfirmationModal" class="delete-modal">
+    <div class="delete-modal-content">
+      <span class="delete-modal-close">&times;</span>
+      <div class="delete-modal-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
+      <div class="delete-modal-header">Xác nhận xóa sản phẩm</div>
+      <div class="delete-modal-body">Bạn có chắc chắn muốn xóa sản phẩm <strong id="productNameToDelete"></strong> này không? Hành động này không thể hoàn tác!</div>
+      <div class="delete-modal-buttons">
+        <button class="btn-cancel" id="cancelDeleteBtn">Hủy</button>
+        <button class="btn-confirm-delete" id="confirmDeleteBtn">Xóa</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="successModal" class="success-modal">
+    <div class="success-modal-content">
+      <span class="success-modal-close">&times;</span>
+      <div class="success-modal-icon"><i class="bi bi-check-circle-fill"></i></div>
+      <div class="success-modal-message">Xóa sản phẩm thành công!</div>
+      <div class="success-modal-button">
+        <button id="okSuccessBtn">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Dữ liệu sản phẩm MẪU - Sẽ reset về trạng thái này khi tải lại trang
+    let products = [
+        { id: 1, tenSanPham: "GIÀY ULTRABOUNCE", gia: 2400000, soLuong: 243, mauSac: "Trắng", danhMuc: "Sneaker", hinhAnhUrl: "img/2.png", moTa: "Giày thể thao siêu nhẹ." },
+        { id: 2, tenSanPham: "GIÀY SAMBA OG", gia: 2700000, soLuong: 99, mauSac: "Đen", danhMuc: "Sneaker", hinhAnhUrl: "img/2.png", moTa: "Biểu tượng phong cách." },
+        { id: 3, tenSanPham: "GIÀY JODAn", gia: 500000, soLuong: 150, mauSac: "Xanh", danhMuc: "Sneaker", hinhAnhUrl: "img/2.png", moTa: "Chất liệu cotton mềm mại." }
+    ];
+    let nextProductId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+
+    // Lắng nghe sự kiện click cho nút "Tạo sản phẩm"
+    document.getElementById('createProductBtn').addEventListener('click', function() {
+      window.location.href = 'TSP.html'; // Chuyển hướng đến file TSP.html
+    });
+
+    // --- Chức năng tìm kiếm sản phẩm ---
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const productTableBody = document.querySelector('#productTable tbody');
+
+    // Hàm thực hiện tìm kiếm
+    function searchProducts() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const filteredProducts = products.filter(product => 
+          product.tenSanPham.toLowerCase().includes(searchTerm)
+      );
+      renderProducts(filteredProducts); // Render lại bảng với kết quả tìm kiếm
+    }
+
+    // Gắn sự kiện click cho nút tìm kiếm
+    searchBtn.addEventListener('click', searchProducts);
+
+    // Tùy chọn: Gắn sự kiện 'keyup' để tìm kiếm tức thì khi người dùng gõ
+    searchInput.addEventListener('keyup', searchProducts);
+
+    // --- Logic cho Modal xác nhận xóa ---
+    let productIdToDelete = null;
+    let rowToDelete = null;
+
+    const deleteConfirmationModal = document.getElementById('deleteConfirmationModal');
+    const deleteModalCloseBtn = document.querySelector('.delete-modal-close');
+    const productNameToDeleteSpan = document.getElementById('productNameToDelete');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+    const successModal = document.getElementById('successModal');
+    const successModalCloseBtn = document.querySelector('.success-modal-close');
+    const okSuccessBtn = document.getElementById('okSuccessBtn');
+
+    // Hàm để render (vẽ) các sản phẩm vào bảng
+    function renderProducts(productsToRender) {
+        productTableBody.innerHTML = ''; // Xóa tất cả các hàng hiện có
+
+        if (productsToRender.length === 0) {
+            productTableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">Không có sản phẩm nào để hiển thị.</td></tr>';
+            return;
+        }
+
+        productsToRender.forEach(product => {
+            const row = productTableBody.insertRow();
+            row.insertCell().textContent = product.id;
+            row.insertCell().textContent = product.tenSanPham;
+            row.insertCell().textContent = product.gia;
+            row.insertCell().textContent = product.soLuong;
+            row.insertCell().textContent = product.mauSac;
+            row.insertCell().textContent = product.danhMuc;
+
+            const imgCell = row.insertCell();
+            if (product.hinhAnhUrl) {
+                const img = document.createElement('img');
+                img.src = product.hinhAnhUrl;
+                img.alt = product.tenSanPham;
+                img.classList.add('product-image');
+                imgCell.appendChild(img);
+            } else {
+                imgCell.textContent = 'N/A';
+            }
+
+            const actionsCell = row.insertCell();
+            actionsCell.classList.add('action-icons');
+            actionsCell.innerHTML = `
+                <i class="bi bi-pencil-square" title="Sửa" data-id="${product.id}"></i>
+                <i class="bi bi-trash" title="Xóa" data-id="${product.id}" data-name="${product.tenSanPham}"></i>
+            `;
+        });
+    }
+
+    // Tải sản phẩm khi trang được tải lần đầu
+    document.addEventListener('DOMContentLoaded', () => {
+        renderProducts(products); // Render từ mảng 'products' đã định nghĩa
+    });
+
+    // Xử lý sự kiện click trên toàn bộ bảng (sử dụng event delegation)
+    document.querySelector('table').addEventListener('click', function(event) {
+        // Xử lý click vào icon "Chỉnh sửa"
+        if (event.target.classList.contains('bi-pencil-square')) {
+            const productId = event.target.dataset.id;
+            if (productId) {
+                // Chuyển hướng đến CSSP.html và truyền ID
+                window.location.href = `CSSP.html?id=${productId}`;
+            }
+        }
+        // Xử lý click vào icon "Xóa"
+        else if (event.target.classList.contains('bi-trash')) {
+            productIdToDelete = parseInt(event.target.dataset.id);
+            rowToDelete = event.target.closest('tr');
+            const productName = event.target.dataset.name;
+
+            if (productIdToDelete !== null && rowToDelete && productName) {
+                productNameToDeleteSpan.textContent = productName;
+                deleteConfirmationModal.style.display = 'flex';
+            }
+        }
+    });
+
+    // Xử lý sự kiện khi click nút "Xác nhận" trong modal xác nhận xóa
+    confirmDeleteBtn.addEventListener('click', function() {
+      if (productIdToDelete !== null) {
+        const initialLength = products.length;
+        products = products.filter(p => p.id !== productIdToDelete);
+        
+        if (products.length < initialLength) {
+            deleteConfirmationModal.style.display = 'none'; // Đóng modal xác nhận
+            successModal.style.display = 'flex'; // Hiển thị modal thành công
+            renderProducts(products); // Tải lại danh sách sản phẩm sau khi xóa thành công
+        } else {
+            alert('Không tìm thấy sản phẩm để xóa.');
+            deleteConfirmationModal.style.display = 'none';
+        }
+        
+        productIdToDelete = null; // Reset ID
+        rowToDelete = null; // Reset hàng
+      }
+    });
+
+    // Xử lý sự kiện khi click nút "Hủy" trong modal xác nhận
+    cancelDeleteBtn.addEventListener('click', function() {
+      deleteConfirmationModal.style.display = 'none';
+      productIdToDelete = null;
+      rowToDelete = null;
+    });
+
+    // Xử lý sự kiện khi click dấu "X" để đóng modal xác nhận
+    deleteModalCloseBtn.addEventListener('click', function() {
+      deleteConfirmationModal.style.display = 'none';
+      productIdToDelete = null;
+      rowToDelete = null;
+    });
+
+    // Xử lý sự kiện khi click bên ngoài modal xác nhận để đóng
+    window.addEventListener('click', function(event) {
+      if (event.target == deleteConfirmationModal) {
+        deleteConfirmationModal.style.display = 'none';
+        productIdToDelete = null;
+        rowToDelete = null;
+      }
+      if (event.target == successModal) {
+        successModal.style.display = 'none';
+      }
+    });
+
+    // --- Logic cho Modal thông báo thành công ---
+    // Xử lý sự kiện khi click nút "OK" trong modal thành công
+    okSuccessBtn.addEventListener('click', function() {
+      successModal.style.display = 'none'; // Đóng modal thành công
+    });
+
+    // Xử lý sự kiện khi click dấu "X" để đóng modal thành công
+    successModalCloseBtn.addEventListener('click', function() {
+      successModal.style.display = 'none'; // Đóng modal thành công
+    });
+  </script>
+</body>
+</html>

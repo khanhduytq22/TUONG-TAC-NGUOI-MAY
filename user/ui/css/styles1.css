@@ -5,6 +5,38 @@ body {
   background-color: #f8f9fa;
   color: #212529;
 }
+.modal-content {
+  border-radius: 15px;
+}
+.form-check-input:checked {
+  background-color: red;
+  border-color: red;
+}
+.form-check-label.selected {
+  color: red;
+  font-weight: bold;
+}
+.address-detail {
+  margin-left: 28px;
+  font-size: 14px;
+}
+.add-address {
+  margin-top: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.add-address i {
+  margin-right: 8px;
+}
+.btn-confirm {
+  background-color: #333;
+  color: white;
+  border-radius: 12px;
+  padding: 10px 30px;
+}
+.btn-confirm:hover {
+  background-color: #555;
+}
 .center-message1 {
   display: flex;
   align-items: center;

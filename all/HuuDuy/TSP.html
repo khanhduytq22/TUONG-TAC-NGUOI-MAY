@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thêm Sản Phẩm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: normal;
+            margin-bottom: 30px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        /* Error message style */
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        /* Style cho chọn file và nút */
+        .file-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .choose-btn {
+            padding: 8px 16px;
+            background-color: #ccc;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        #file-name {
+            margin-left: 15px;
+            font-size: 14px;
+            color: #333;
+            max-width: calc(100% - 120px);
+            word-break: break-word;
+        }
+
+        /* Nút Thêm nhỏ, icon phù hợp, đặt đúng vị trí */
+        .btn-add {
+            width: 100px;
+            height: 40px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        /* Custom dropdown styles */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px; /* Add margin to separate from next form group */
+        }
+
+        .dropdown-header {
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background-color: #fff;
+        }
+
+        .dropdown-list {
+            position: absolute;
+            width: 100%;
+            border: 1px solid #ced4da;
+            border-top: none;
+            border-radius: 0 0 0.375rem 0.375rem;
+            background-color: #fff;
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none; /* Hidden by default */
+        }
+
+        .dropdown-list.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover, .dropdown-item.selected {
+            background-color: #e9ecef;
+        }
+
+        /* Custom styles for the Add Success Modal */
+        .add-success-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5); /* Semi-transparent black background */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+
+        .add-success-modal-content {
+            background-color: #fefefe;
+            padding: 30px;
+            border: 1px solid #ddd;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            text-align: center;
+            position: relative;
+        }
+
+        .add-success-modal-close {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .add-success-modal-close:hover,
+        .add-success-modal-close:focus {
+            color: #555;
+            text-decoration: none;
+        }
+
+        .add-success-modal-icon {
+            font-size: 48px;
+            color: #28a745; /* Green checkmark */
+            margin-bottom: 20px;
+        }
+
+        .add-success-modal-message {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .add-success-modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .add-success-modal-buttons button {
+            padding: 12px 20px; /* Điều chỉnh padding ngang để vừa chữ dài hơn */
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px; /* Tăng min-width để nút không quá nhỏ */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .add-success-modal-buttons .btn-ok {
+            background-color: #28a745; /* Green for OK */
+            color: white;
+            border: 1px solid #28a745;
+        }
+        .add-success-modal-buttons .btn-ok:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+        /* Đã đổi tên class và màu sắc cho nút "Thêm sản phẩm khác" */
+        .add-success-modal-buttons .btn-add-more {
+            background-color: #007bff; /* Màu xanh dương cho hành động thêm */
+            color: white;
+            border: 1px solid #007bff;
+        }
+        .add-success-modal-buttons .btn-add-more:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="form-container">
+        <h1>THÊM SẢN PHẨM</h1>
+
+        <div class="form-group">
+            <input type="text" id="tenSanPham" class="form-control" placeholder="Tên sản phẩm" />
+            <div class="error-message" id="error-ten"></div>
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="moTa" class="form-control" placeholder="Mô tả" />
+            <div class="error-message" id="error-mota"></div>
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="gia" class="form-control" placeholder="Giá cả" />
+            <div class="error-message" id="error-gia"></div>
+        </div>
+
+        <div class="form-group custom-dropdown" id="color-dropdown">
+            <div class="dropdown-header">
+                <span id="selected-color-text">Chọn màu sắc</span>
+                <i class="bi bi-chevron-down"></i>
+            </div>
+            <div class="dropdown-list">
+                <div class="dropdown-item" data-value="trang">Màu Trắng</div>
+                <div class="dropdown-item" data-value="do">Màu Đỏ</div>
+                <div class="dropdown-item" data-value="xanh">Màu Xanh</div>
+            </div>
+            <input type="hidden" id="mauSac" />
+            <div class="error-message" id="error-mau"></div>
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="soLuong" class="form-control" placeholder="Số lượng tồn kho" />
+            <div class="error-message" id="error-sl"></div>
+        </div>
+
+        <div class="form-group custom-dropdown" id="size-dropdown">
+            <div class="dropdown-header">
+                <span id="selected-size-text">Chọn kích thước</span>
+                <i class="bi bi-chevron-down"></i>
+            </div>
+            <div class="dropdown-list">
+                <div class="dropdown-item" data-value="24.5cm">24.5 cm</div>
+                <div class="dropdown-item" data-value="25cm">25 cm</div>
+                <div class="dropdown-item" data-value="25.5cm">25.5 cm</div>
+            </div>
+            <input type="hidden" id="kichThuoc" />
+            <div class="error-message" id="error-kichthuoc"></div>
+        </div>
+
+        <div class="form-group custom-dropdown" id="category-dropdown">
+            <div class="dropdown-header">
+                <span id="selected-category-text">Chọn danh mục</span>
+                <i class="bi bi-chevron-down"></i>
+            </div>
+            <div class="dropdown-list">
+                <div class="dropdown-item" data-value="sanda">Sanda</div>
+                <div class="dropdown-item" data-value="sneaker">Sneaker</div>
+                <div class="dropdown-item" data-value="boot">Boot</div>
+            </div>
+            <input type="hidden" id="danhMuc" />
+            <div class="error-message" id="error-danhmuc"></div>
+        </div>
+
+        <div class="file-group">
+            <button class="choose-btn" id="choose-file">
+                <i class="bi bi-upload"></i> Chọn file
+            </button>
+            <div id="file-name">No file chosen</div>
+        </div>
+        <div class="error-message" id="error-file"></div>
+
+        <button class="btn btn-primary btn-add float-end" id="btnAdd">
+            <i class="bi bi-plus-square"></i> Thêm
+        </button>
+        <div style="clear: both;"></div>
+    </div>
+
+    <div id="addSuccessModal" class="add-success-modal">
+        <div class="add-success-modal-content">
+            <span class="add-success-modal-close">&times;</span>
+            <div class="add-success-modal-icon"><i class="bi bi-check-circle-fill"></i></div>
+            <div class="add-success-modal-message">Thêm sản phẩm thành công</div>
+            <div class="add-success-modal-buttons">
+                <button class="btn-ok" id="okAddSuccessBtn"><i class="bi bi-check-lg"></i> Về danh sách sản phẩm</button>
+                <button class="btn-add-more" id="cancelAddSuccessBtn"><i class="bi bi-plus-square"></i> Thêm sản phẩm khác</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Chọn file
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+
+        document.getElementById('choose-file').addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : 'No file chosen';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+        // Function to initialize custom dropdowns
+        function setupCustomDropdown(dropdownId, hiddenInputId, selectedTextId) {
+            const dropdown = document.getElementById(dropdownId);
+            const header = dropdown.querySelector('.dropdown-header');
+            const list = dropdown.querySelector('.dropdown-list');
+            const hiddenInput = document.getElementById(hiddenInputId);
+            const selectedText = document.getElementById(selectedTextId);
+            const items = dropdown.querySelectorAll('.dropdown-item');
+
+            header.addEventListener('click', () => {
+                list.classList.toggle('show');
+            });
+
+            items.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Remove 'selected' class from all items
+                    items.forEach(i => i.classList.remove('selected'));
+                    // Add 'selected' class to the clicked item
+                    item.classList.add('selected');
+
+                    hiddenInput.value = item.dataset.value;
+                    selectedText.textContent = item.textContent;
+                    list.classList.remove('show'); // Hide the list after selection
+                });
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener('click', (event) => {
+                if (!dropdown.contains(event.target)) {
+                    list.classList.remove('show');
+                }
+            });
+        }
+
+        // Setup each custom dropdown
+        setupCustomDropdown('color-dropdown', 'mauSac', 'selected-color-text');
+        setupCustomDropdown('size-dropdown', 'kichThuoc', 'selected-size-text');
+        setupCustomDropdown('category-dropdown', 'danhMuc', 'selected-category-text');
+
+        // Lấy các phần tử của modal thông báo thêm sản phẩm
+        const addSuccessModal = document.getElementById('addSuccessModal');
+        const addSuccessModalCloseBtn = document.querySelector('.add-success-modal-close');
+        const okAddSuccessBtn = document.getElementById('okAddSuccessBtn');
+        const cancelAddSuccessBtn = document.getElementById('cancelAddSuccessBtn'); // Đây vẫn là ID cho nút "Thêm sản phẩm khác"
+
+        // Hàm kiểm tra lỗi và xử lý thêm sản phẩm
+        document.getElementById('btnAdd').addEventListener('click', () => {
+            // Reset tất cả lỗi
+            document.querySelectorAll('.error-message').forEach(el => el.innerText = '');
+
+            let errors = 0;
+
+            // Kiểm tra từng trường
+            const ten = document.getElementById('tenSanPham').value.trim();
+            if (!ten) {
+                document.getElementById('error-ten').innerText = '* Vui lòng nhập tên sản phẩm!';
+                errors++;
+            }
+
+            const moTa = document.getElementById('moTa').value.trim();
+            if (!moTa) {
+                document.getElementById('error-mota').innerText = '* Vui lòng nhập mô tả!';
+                errors++;
+            }
+
+            const gia = document.getElementById('gia').value.trim();
+            if (!gia || isNaN(gia) || Number(gia) <= 0) {
+                document.getElementById('error-gia').innerText = '* Giá không hợp lệ!';
+                errors++;
+            }
+
+            const mauSac = document.getElementById('mauSac').value;
+            if (!mauSac) {
+                document.getElementById('error-mau').innerText = '* Vui lòng chọn màu!';
+                errors++;
+            }
+
+            const soLuong = document.getElementById('soLuong').value.trim();
+            if (!soLuong || isNaN(soLuong) || Number(soLuong) <= 0) {
+                document.getElementById('error-sl').innerText = '* Vui lòng nhập số lượng tồn kho!';
+                errors++;
+            }
+
+            const kichThuoc = document.getElementById('kichThuoc').value;
+            if (!kichThuoc) {
+                document.getElementById('error-kichthuoc').innerText = '* Vui lòng chọn kích thước!';
+                errors++;
+            }
+
+            const danhMuc = document.getElementById('danhMuc').value;
+            if (!danhMuc) {
+                document.getElementById('error-danhmuc').innerText = '* Vui lòng chọn danh mục!';
+                errors++;
+            }
+
+            // Kiểm tra file ảnh
+            if (!fileInput.files || fileInput.files.length === 0) {
+                document.getElementById('error-file').innerText = '* Vui lòng chọn ảnh sản phẩm!';
+                errors++;
+            } else {
+                // Kiểm tra loại file (tùy chọn)
+                const file = fileInput.files[0];
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    document.getElementById('error-file').innerText = '* Chỉ chấp nhận ảnh JPG, PNG, GIF!';
+                    errors++;
+                }
+                // Kiểm tra kích thước file (tùy chọn)
+                const maxSize = 2 * 1024 * 1024; // 2MB
+                if (file.size > maxSize) {
+                    document.getElementById('error-file').innerText = '* Kích thước ảnh không quá 2MB!';
+                    errors++;
+                }
+            }
+
+            // Nếu không có lỗi, thực hiện hành động thêm sản phẩm và hiển thị modal
+            if (errors === 0) {
+                // TODO: Ở đây bạn sẽ gửi dữ liệu form đến backend (ví dụ: dùng fetch API)
+                // Khi nhận được phản hồi thành công từ backend, thì hiển thị modal.
+                // Dưới đây là phần GIẢ LẬP việc thêm thành công.
+                console.log('Dữ liệu sản phẩm hợp lệ, hiển thị modal.');
+                addSuccessModal.style.display = 'flex'; // Hiển thị modal thành công
+            }
+        });
+
+        // Xử lý sự kiện khi click nút "Về danh sách sản phẩm"
+        okAddSuccessBtn.addEventListener('click', function() {
+            addSuccessModal.style.display = 'none'; // Đóng modal
+            // Chuyển hướng về trang index.html (trang chủ chính)
+            window.location.href = 'index.html';
+        });
+
+        // Xử lý sự kiện khi click nút "Thêm sản phẩm khác" (trước đây là "Hủy")
+        cancelAddSuccessBtn.addEventListener('click', function() {
+            addSuccessModal.style.display = 'none'; // Đóng modal
+            // Ở lại trang thêm sản phẩm (TSP.html) và reset form
+            document.getElementById('tenSanPham').value = '';
+            document.getElementById('moTa').value = '';
+            document.getElementById('gia').value = '';
+            document.getElementById('soLuong').value = '';
+            document.getElementById('file-name').textContent = 'No file chosen';
+            fileInput.value = ''; // Clear file input
+
+            // Reset dropdowns
+            document.getElementById('mauSac').value = '';
+            document.getElementById('selected-color-text').textContent = 'Chọn màu sắc';
+            document.getElementById('color-dropdown').querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+
+            document.getElementById('kichThuoc').value = '';
+            document.getElementById('selected-size-text').textContent = 'Chọn kích thước';
+            document.getElementById('size-dropdown').querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+
+            document.getElementById('danhMuc').value = '';
+            document.getElementById('selected-category-text').textContent = 'Chọn danh mục';
+            document.getElementById('category-dropdown').querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+        });
+
+        // Xử lý sự kiện khi click dấu "X" để đóng modal thêm sản phẩm thành công
+        addSuccessModalCloseBtn.addEventListener('click', function() {
+            addSuccessModal.style.display = 'none'; // Đóng modal
+            // Không reset form hay chuyển hướng khi đóng bằng dấu X
+        });
+
+        // Xử lý sự kiện khi click bên ngoài modal để đóng
+        window.addEventListener('click', function(event) {
+            if (event.target == addSuccessModal) {
+                addSuccessModal.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>

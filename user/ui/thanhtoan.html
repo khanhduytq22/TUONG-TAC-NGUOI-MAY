@@ -25,7 +25,7 @@
       <div class="form-group">
         <label for="address">Địa chỉ:</label>
         <input type="text" id="address" name="address" placeholder="Nhập địa chỉ" required />
-        <a href="#" class="btn-add-address" aria-label="Thêm địa chỉ" data-bs-toggle="modal" data-bs-target="#addAddressModal">+</a>
+        <a href="#" class="btn-add-address" aria-label="Thêm địa chỉ" data-bs-toggle="modal" data-bs-target="#addressModal">+</a>
       </div>
     </form>
   </section>
@@ -147,6 +147,50 @@
       🎉 Bạn đã đặt hàng thành công!
     </div>
   </div>
+  <!-- Modal -->
+  <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content p-4">
+        <h4 class="modal-title mb-4" id="addressModalLabel"><strong>Địa chỉ</strong></h4>
+
+        <!-- Address List -->
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="radio" name="address" id="address2" checked>
+          <label class="form-check-label selected" for="address2">
+            0345 343 339 --Đặng Khánh Duy
+          </label>
+          <div class="address-detail text-danger">Ninh Lai - Sơn Dương - Tuyên Quang</div>
+        </div>
+
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="radio" name="address" id="address3">
+          <label class="form-check-label" for="address2">
+            0725 321 134 -- Lưu Văn Dũng
+          </label>
+          <div class="address-detail">Đại học Thủy lợi - 175 Tây Sơn</div>
+        </div>
+
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="radio" name="address" id="address4">
+          <label class="form-check-label" for="address3">
+            0345 343 339 -- Anh Quân
+          </label>
+          <div class="address-detail">Thiện Kế - Sơn Nam - Tuyên Quang</div>
+        </div>
+
+        <!-- Add New Address -->
+        <div class="add-address text-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+          <i class="bi bi-plus-circle"></i> Thêm địa chỉ mới
+        </div>
+
+        <!-- Confirm Button -->
+        <div class="text-end mt-4">
+          <button class="btn btn-confirm" data-bs-dismiss="modal">Xác Nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal thêm địa chỉ -->
   <div class="modal fade" id="addAddressModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -167,7 +211,7 @@
           <textarea id="address1" class="form-control mb-3" rows="3" placeholder="Nhập địa chỉ"></textarea>
         </div>
 
-        <div class="modal-footer border-0">
+        <div class="modal-footer">
           <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
           <button class="btn btn-primary" data-bs-dismiss="modal">Xác Nhận</button>
         </div>

@@ -289,6 +289,37 @@
     .then(res => res.text())
     .then(data => document.getElementById('footer').innerHTML = data);
 </script>
+<script>
+  let rowsToDelete = [];
+  let currentRowToDelete = null;
+
+  // Bắt sự kiện click vào biểu tượng thùng rác
+  document.querySelectorAll('.bi-trash').forEach(icon => {
+    icon.addEventListener('click', function () {
+      currentRowToDelete = this.closest('tr');
+    });
+  });
+
+  // Khi nhấn "Xóa" trong modal
+  document.getElementById('btnDeleteConfirm').addEventListener('click', () => {
+    if (currentRowToDelete && !rowsToDelete.includes(currentRowToDelete)) {
+      // Thêm vào danh sách chờ xóa (chưa xóa khỏi DOM)
+      rowsToDelete.push(currentRowToDelete);
+      currentRowToDelete.classList.add('table-danger'); // highlight dòng bị xóa
+      showDeleteAlert(deleteSuccessAlert);
+    } else {
+      showDeleteAlert(deleteErrorAlert);
+    }
+    currentRowToDelete = null;
+  });
+
+  // Khi nhấn "Cập nhật giỏ hàng" → xóa thật
+  document.getElementById('btnUpdateCart').addEventListener('click', () => {
+    rowsToDelete.forEach(row => row.remove());
+    rowsToDelete = []; // reset danh sách
+    showDeleteAlert(deleteSuccessAlert);
+  });
+</script>
 
 <div id="footer"></div>
 
